@@ -43,24 +43,23 @@ PudgyPenguins.Transfer.handler(async ({ event, context }) => {
     account = {
       id: tokenId,
       currentOwner: event.params.to,
-      transferCount: 0 ,
-      isOriginalOwner: true, 
+      isOriginalOwner: true,
       lastUpdatedBlock: event.block.number,
       mintedAt: event.block.timestamp,
       isBurned: isBurnEvent, 
       lastSalePrice: 0.03,
     };
   } else {
-      let oldTransferCount = account.transferCount
-      // We just want to keep info about the first owner, so if its not the actual, transferCount must be 1
-      if (isSelfTransfer && oldTransferCount == 0) { oldTransferCount = 1}
+      let old_OG_Owner = account.isOriginalOwner
+      // We just want to keep info about the first owner
+      if (!isSelfTransfer && old_OG_Owner == true) { old_OG_Owner = false}
       account = {
         ...account,
         currentOwner: event.params.to,
-        transferCount: oldTransferCount +1,
+        isOriginalOwner: old_OG_Owner,
         lastUpdatedBlock: event.block.number,
         isBurned: isBurnEvent,
-        lastSalePrice: oldTransferCount,
+        lastSalePrice: 0,
       };
   }
 

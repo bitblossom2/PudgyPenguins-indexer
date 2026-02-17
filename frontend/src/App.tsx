@@ -69,7 +69,7 @@ export default function App() {
         loyal: PudgyPenguins_Account(
         limit: 10,
         order_by: {mintedAt: asc},
-        where: {transferCount: {_eq: 0}}
+        where: {isOriginalOwner: {_eq: true}}
         ) {
         id
         currentOwner

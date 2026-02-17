@@ -16,7 +16,6 @@ type PudgyPenguins_Transfer {
 type PudgyPenguins_Account {
   id: ID!
   currentOwner: String!
-  transferCount: Int!
   isOriginalOwner: Boolean!
   lastUpdatedBlock: Int!
   mintedAt: Int!
