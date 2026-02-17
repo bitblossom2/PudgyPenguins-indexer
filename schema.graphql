@@ -1,0 +1,32 @@
+type PudgyPenguins_CreatePenguin {
+  id: ID!
+  event_id: BigInt!
+  timestamp: Int!
+}
+
+type PudgyPenguins_Transfer {
+  id: ID!
+  from: String!
+  to: String!
+  tokenId: BigInt!
+  price: BigInt
+}
+
+# Entity to help us save each nft's data
+type PudgyPenguins_Account {
+  id: ID!
+  currentOwner: String!
+  transferCount: Int!
+  isOriginalOwner: Boolean!
+  lastUpdatedBlock: Int!
+  mintedAt: Int!
+  isBurned: Boolean!
+  lastSalePrice: Float!
+}
+
+# Global statistics entity to track collection-wide metrics
+type GlobalStat {
+  id: ID!
+  totalTransfers: BigInt!
+  totalMints: BigInt!
+}
