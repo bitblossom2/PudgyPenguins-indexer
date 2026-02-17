@@ -54,10 +54,3 @@ The indexer processes data for every mint and transfer event. I implemented a cl
 The indexer maintains a real-time state of each Pudgy Penguin's lifecycle:
 - `Is original owner`: When an NFT moves between different wallet addresses for the first time, the isOriginalOwner property stays in false.
 - `Ownership Updates`: The currentOwner property is updated on every transfer event to ensure the dashboard reflects the most recent holder.
-
-
-## 📊 Cómo ejecutar este proyecto
-
-1. Instalar dependencias:
-   ```bash
-   pnpm install
