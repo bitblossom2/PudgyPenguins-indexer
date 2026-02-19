@@ -24,7 +24,8 @@ pnpm codegen
 
 # Pudgy Penguins Indexer 🐧 | Envio HyperIndex Challenge
 
-Este repositorio contiene un indexador de alto rendimiento para la colección **Pudgy Penguins** en Ethereum, desarrollado como parte de mi proceso de aplicación para Envio.
+This repo contains an Indexer for the NFT collection **Pudgy Penguins** from the Ethereum mainnet blockchain. It's object is to show how efficient is the Hyperindex envio framework and how you can use it in a very simple project like a dashboard, but also having the possibility of integrating it with other tools and make more powerfull projects.
+
 
 ## 🚀 My dev process (Step-by-Step)
 
@@ -36,7 +37,7 @@ In order to build this project, I took an incremental approach:
 4.  **Handler Logic**: Initially, I defined simple properties like mintedAt in `EventHandlers.ts` to capture updates on demand.
 5.  **Frontend**: I must admit I'm not a fan of frontend development, so I used AI to assist with the UI. However, I wrote all the queries myself to ensure I understood exactly where the data was coming from.
 6. **Testing**: I used pnpm envio dev to set up the environment and tested it multiple times. I also used Hasura to verify that the data was correct and that the frontend was fetching it properly.
-7.  **Complejización y Enriquecimiento**:
+7.  **Increasing Complexity:**:
     * I started with basic properties to get used to the Envio workflow. 
     * Then, I added research-oriented properties. I tried to find the "oldest NFTs kept alive," but I discovered that no NFTs in this collection had been burned yet, so I focused on other metrics.
     * I implemented a list of the "oldest NFTs still held by their original minter," which worked quite well.
