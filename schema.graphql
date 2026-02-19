@@ -20,12 +20,4 @@ type PudgyPenguins_Account {
   lastUpdatedBlock: Int!
   mintedAt: Int!
   isBurned: Boolean!
-  lastSalePrice: Float!
-}
-
-# Global statistics entity to track collection-wide metrics
-type GlobalStat {
-  id: ID!
-  totalTransfers: BigInt!
-  totalMints: BigInt!
 }

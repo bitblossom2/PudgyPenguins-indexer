@@ -27,39 +27,8 @@ export default function App() {
   const [loyal, setloyal] = useState<any[]>([]);
   const [burned, setBurned] = useState<any[]>([]);
   const [monthlyBurnCount, setMonthlyBurnCount] = useState(0);
-  const [mostExp, setMostExp] = useState([]);
-
+  const [recentActivity, setRecentActivity] = useState<any[]>([]);
   useEffect(() => {
-
-  // Market data (Reservoir)
-  const fetchMarketData = async () => {
-    try {
-    const res = await fetch( "https://api.reservoir.tools/tokens/v7?collection=0xbd3531da5cf585039645180344b119b4e259d404&sortBy=floorAskPrice&sortDirection=desc&limit=10" );
-    if (!res.ok) throw new Error("API_LIMIT_OR_CONNECTION_ERROR");
-
-    const data = await res.json();
-    const formattedValuables = data.tokens.map((item: any) => ({
-      id: item.token.tokenId,
-      price: item.market?.floorAsk?.price?.amount?.decimal || "N/A",
-      image: item.token.image,
-      owner: item.token.owner
-    }));
-
-    console.log("Reservoir data:", formattedValuables);
-    setMostExp(formattedValuables);
-    } catch (e) {
-
-      console.error("Error fetching market prices:", e);
-      const fallbackData = [
-        { id: "6873", price: 400.5, image: "https://api.pudgypenguins.io/pudgy/6873/image", owner: "0x71C765...d897" },
-        { id: "5678", price: 150.2, image: "https://api.pudgypenguins.io/pudgy/5678/image", owner: "0x123456...AbCd" },
-        { id: "1234", price: 85.0, image: "https://api.pudgypenguins.io/pudgy/1234/image", owner: "0x888888...8888" },
-        { id: "4421", price: 45.3, image: "https://api.pudgypenguins.io/pudgy/4421/image", owner: "0xAaBbCc...DdEe" },
-        { id: "9982", price: 32.1, image: "https://api.pudgypenguins.io/pudgy/9982/image", owner: "0xFeEdBe...Ef00" },
-      ];
-      setMostExp(fallbackData as any);
-    }
-  };
 
   // Index data (Envio)
   const fetchData = async () => {
@@ -76,14 +45,14 @@ export default function App() {
         mintedAt
       }
 
-      mostExpensive: PudgyPenguins_Account(
+      recentActivity: PudgyPenguins_Transfer(
         limit: 10,
-        order_by: {lastSalePrice: desc},
-        where: {isBurned: {_eq: false}}
-        ){
+        order_by: {id: desc} # O por blockNumber si lo tienes
+      ) {
         id
-        currentOwner
-        lastSalePrice
+        from
+        to
+        tokenId
       }
 
       burned: PudgyPenguins_Account(
@@ -117,14 +86,13 @@ export default function App() {
         setloyal(json.data.loyal);
         setBurned(json.data.burned);
         setMonthlyBurnCount(json.data.monthlyBurnData.length);
+        setRecentActivity(json.data.recentActivity);
       }
     } catch (e) {
       console.error(" CONNECTION ERROR:", e);
     }
-
   };
 
-    fetchMarketData();
     fetchData();
   }, []);
 
@@ -143,15 +111,12 @@ export default function App() {
         <p style={styles.subtitle}>Institutional Grade Indexing Dashboard</p>
       </header>
 
-
       <div style={styles.statsRow}>
-
       <div style={styles.statCard}>
         <p style={styles.statLabel}>MONTHLY_BURN_RATE</p>
         <p style={styles.statValue}>{monthlyBurnCount} <span style={styles.statUnit}>UNITS</span></p>
         <p style={styles.statSub}>Target: Mainnet_Activity</p>
       </div>
-
 
       <div style={{ flex: 1 }}></div>
 
@@ -162,16 +127,6 @@ export default function App() {
         {/* Rigth column: ANCESTORS */}
         <section style={{...styles.columnSection, minHeight: '600px'}}> {/* Forzamos altura mínima */}
           <h2 style={styles.sectionTitle}>[v] TOP_10_LOYAL_ANCESTORS</h2>
-          
-          <div style={{ 
-            height: '20px', 
-            borderBottom: '1px dashed #003b00', 
-            marginBottom: '20px',
-            fontSize: '10px',
-            color: '#003b00'
-          }}>
-            [SYSTEM_BUFFER_ACTIVE]
-          </div>
 
           <div style={styles.verticalList}>
             {loyal.length > 0 ? loyal.map(p => (
@@ -209,35 +164,46 @@ export default function App() {
 
 
         {/* Left column: EXPENSIVE */}
-
         <section style={{...styles.columnSection, borderLeft: '1px solid #003b00'}}>
-          <h2 style={{...styles.sectionTitle, color: '#ff0000'}}>[!] TOP_10_MOST_VALUABLE</h2>
+          <h2 style={{...styles.sectionTitle, color: '#00ff41'}}>{"[>] LIVE_TRANSFER_ACTIVITY"}</h2>
           <div style={styles.verticalList}>
-            {mostExp.map((p: any) => (
-              <div key={p.id} style={{...styles.hackerRow, borderColor: '#450a0a'}}>
-                <img
-                src={p.image || `https://api.pudgypenguins.io/pudgy/${p.id}/image`}
-                  style={{...styles.miniImage, filter: 'none'}}
-                  onError={(e) => {
-                  e.currentTarget.style.display = 'none';
-                  const fb = e.currentTarget.parentElement?.querySelector('.img-fallback');
-                  if (fb) (fb as HTMLElement).style.display = 'flex';
-                }}
-                />
-
-                <div className="img-fallback" style={{...styles.imageFallback, color: '#ff0000', borderColor: '#450a0a'}}>
-                  <span style={{fontSize: '8px'}}>VAL_ERR</span>
-                  <span style={{fontSize: '10px'}}>#{p.id}</span>
+            {recentActivity.map((tx: any) => (
+              <div key={tx.id} style={{...styles.hackerRow, borderColor: '#003b00'}}>
+                <div style={styles.imageContainer}>
+                  <img 
+                    src={`https://api.pudgypenguins.io/pudgy/${tx.tokenId}/image`} 
+                    style={styles.miniImage} 
+                    onError={(e) => {
+                      e.currentTarget.style.display = 'none';
+                      const fb = e.currentTarget.parentElement?.querySelector('.img-fallback');
+                      if (fb) (fb as HTMLElement).style.display = 'flex';
+                    }}
+                  />
+                  <div className="img-fallback" style={styles.imageFallback}>
+                    <span style={{fontSize: '8px'}}>OFFLINE</span>
+                    <span style={{fontSize: '10px'}}>#{tx.tokenId}</span>
+                  </div>
                 </div>
 
                 <div style={styles.rowInfo}>
-                  <span style={{...styles.rowId, color: '#ff0000'}}>ID: #{p.id}</span>
-                  <span style={styles.rowOwner}>{p.owner.slice(0,10)}...</span>
+                  <span style={{...styles.rowId, color: '#00ff41'}}>TOKEN_ID: #{tx.tokenId}</span>
+                  <div style={{fontSize: '9px', color: '#008f11', marginTop: '4px'}}>
+                    <span style={{color: '#aaa'}}>FROM:</span> {tx.from.slice(0,6)}...
+                    <span style={{color: '#aaa', marginLeft: '5px'}}>TO:</span> {tx.to.slice(0,6)}
+                  </div>
                 </div>
-                <span style={styles.priceTag}>{p.price} ETH</span>
+                
+                {/* Etiqueta de tipo de movimiento */}
+                <span style={{
+                  fontSize: '9px', 
+                  color: tx.from === "0x0000000000000000000000000000000000000000" ? "#00ff41" : "#008f11",
+                  border: '1px solid',
+                  padding: '2px 4px'
+                }}>
+                  {tx.from === "0x0000000000000000000000000000000000000000" ? "MINT" : "TRANSFER"}
+                </span>
               </div>
             ))}
-
           </div>
         </section>
       </main>

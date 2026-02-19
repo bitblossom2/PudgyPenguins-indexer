@@ -39,8 +39,8 @@ In order to build this project, I took an incremental approach:
 6. **Testing**: I used pnpm envio dev to set up the environment and tested it multiple times. I also used Hasura to verify that the data was correct and that the frontend was fetching it properly.
 7.  **Increasing Complexity:**:
     * I started with basic properties to get used to the Envio workflow. 
-    * Then, I added research-oriented properties. I tried to find the "oldest NFTs kept alive," but I discovered that no NFTs in this collection had been burned yet, so I focused on other metrics.
-    * I implemented a list of the "oldest NFTs still held by their original minter," which worked quite well.
+    * Then, I added research-oriented properties. I tried to find the "oldest NFTs kept alive," but I discovered that no NFTs in this collection had been burned yet, so I focused on other metrics. 
+    * I implemented a list of the "oldest NFTs still held by their original minter", and a list of the ten most recent transactions which worked quite well.
     * Regarding market data, I attempted to connect with Reservoir for real-time prices. It got a bit complex, so I implemented fallback data to demonstrate how HyperIndex can integrate with external tools.
     * As I added more charts, I encountered some frontend bugs where the data was present in the page but not displaying correctly, even though the Hasura queries worked perfectly. I decided to show my current progress while I refactor these visual elements.
 8.  **Insights**:
@@ -55,3 +55,7 @@ The indexer processes data for every mint and transfer event. I implemented a cl
 The indexer maintains a real-time state of each Pudgy Penguin's lifecycle:
 - `Is original owner`: When an NFT moves between different wallet addresses for the first time, the isOriginalOwner property stays in false.
 - `Ownership Updates`: The currentOwner property is updated on every transfer event to ensure the dashboard reflects the most recent holder.
+
+### Challenges & Improvements
+- NFT Images: I couldn't fixed the connection issues to ensure NFT images load consistently, so I added a custom "hacker" scan-line animation and a specialized "OFFLINE" design to make the dashboard more visually striking and professional.
+- Market Data: I decided to stop using external APIs like Reservoir because they often failed to connect. Instead, the dashboard now uses real-time data directly from my own indexer, which is much more stable.

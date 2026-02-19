@@ -36,7 +36,6 @@ PudgyPenguins.Transfer.handler(async ({ event, context }) => {
   const tokenId = event.params.tokenId.toString();
   let account = await context.PudgyPenguins_Account.get(tokenId);
   const isBurnEvent = event.params.to === ADDRESS_ZERO;
-  // is self transfer?
   const isSelfTransfer = event.params.to.toLowerCase() === event.params.from.toLowerCase();
 
   if (!account) {
@@ -47,7 +46,6 @@ PudgyPenguins.Transfer.handler(async ({ event, context }) => {
       lastUpdatedBlock: event.block.number,
       mintedAt: event.block.timestamp,
       isBurned: isBurnEvent, 
-      lastSalePrice: 0.03,
     };
   } else {
       let old_OG_Owner = account.isOriginalOwner
@@ -59,7 +57,6 @@ PudgyPenguins.Transfer.handler(async ({ event, context }) => {
         isOriginalOwner: old_OG_Owner,
         lastUpdatedBlock: event.block.number,
         isBurned: isBurnEvent,
-        lastSalePrice: 0,
       };
   }
 
