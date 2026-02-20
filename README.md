@@ -4,8 +4,7 @@ This repo contains an Indexer for the NFT collection **Pudgy Penguins** from the
 
 ---
 ## Envio Indexer
-
-*Please refer to the [documentation website](https://docs.envio.dev) for a thorough guide on all [Envio](https://envio.dev) indexer features*
+Please refer to the [documentation website](https://docs.envio.dev) for a thorough guide on all [Envio](https://envio.dev) indexer features
 ---
 
 ## 🚀 How to Run
@@ -77,7 +76,7 @@ The indexer maintains a real-time state of each Pudgy Penguin's lifecycle:
 - `Ownership Updates`: The currentOwner property is updated on every transfer event to ensure the dashboard reflects the most recent holder.
 
 ---
-### Challenges & Improvements
+## Challenges & Improvements
 
 - NFT Images: I couldn't fixed the connection issues to ensure NFT images load consistently, so I added a custom "hacker" scan-line animation and a specialized "OFFLINE" design to make the dashboard more visually striking and professional.
 - Market Data: I decided to stop using external APIs like Reservoir because they often failed to connect. Instead, the dashboard now uses real-time data directly from my own indexer, which is much more stable.
