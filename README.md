@@ -1,31 +1,50 @@
-## Envio Indexer
-
-*Please refer to the [documentation website](https://docs.envio.dev) for a thorough guide on all [Envio](https://envio.dev) indexer features*
-
-### Run
-
-```bash
-pnpm dev
-```
-
-Visit http://localhost:8080 to see the GraphQL Playground, local password is `testing`.
-
-### Generate files from `config.yaml` or `schema.graphql`
-
-```bash
-pnpm codegen
-```
-
-### Pre-requisites
-
-- [Node.js (use v18 or newer)](https://nodejs.org/en/download/current)
-- [pnpm (use v8 or newer)](https://pnpm.io/installation)
-- [Docker desktop](https://www.docker.com/products/docker-desktop/)
-
 # Pudgy Penguins Indexer 🐧 | Envio HyperIndex Challenge
 
 This repo contains an Indexer for the NFT collection **Pudgy Penguins** from the Ethereum mainnet blockchain. It's object is to show how efficient is the Hyperindex envio framework and how you can use it in a very simple project like a dashboard, but also having the possibility of integrating it with other tools and make more powerfull projects.
 
+---
+## Envio Indexer
+
+*Please refer to the [documentation website](https://docs.envio.dev) for a thorough guide on all [Envio](https://envio.dev) indexer features*
+---
+
+## 🚀 How to Run
+
+To experience the full dashboard, you need to run the **Backend (Indexer)** and the **Frontend (UI)** simultaneously.
+
+### 1. Prerequisites
+- [Node.js (v18+)](https://nodejs.org/)
+- [pnpm (v8+)](https://pnpm.io/)
+- [Docker Desktop](https://www.docker.com/) (Required to run the indexer database)
+
+### 2. Launch the Backend (Indexer)
+This process starts the Envio engine, the PostgreSQL database, and the Hasura GraphQL API.
+```bash
+# Install dependencies
+pnpm install
+
+# Generate Envio types from config & schema
+pnpm codegen
+
+# Start the indexer and local environment
+pnpm dev
+```
+> **Note:** The GraphQL Playground will be available at http://localhost:8080 (Password: `testing`).
+
+
+### 3. Launch the Frontend (Dashboard)
+Open a new terminal tab, navigate to your frontend directory, and run:
+```bash
+# Navigate to your frontend folder
+cd frontend 
+
+# Install and start
+pnpm install
+pnpm dev
+```
+Visit the local URL shown in your terminal (usually http://localhost:5173) to see the live dashboard.
+
+---
 
 ## 🚀 My dev process (Step-by-Step)
 
@@ -46,6 +65,7 @@ In order to build this project, I took an incremental approach:
 8.  **Insights**:
     * I decided to kept the "burn" detection logic active for future-proofing and potential use with other NFT collections.
 
+---
 ## Technical details
 
 ### Burn Detection
@@ -56,6 +76,8 @@ The indexer maintains a real-time state of each Pudgy Penguin's lifecycle:
 - `Is original owner`: When an NFT moves between different wallet addresses for the first time, the isOriginalOwner property stays in false.
 - `Ownership Updates`: The currentOwner property is updated on every transfer event to ensure the dashboard reflects the most recent holder.
 
+---
 ### Challenges & Improvements
+
 - NFT Images: I couldn't fixed the connection issues to ensure NFT images load consistently, so I added a custom "hacker" scan-line animation and a specialized "OFFLINE" design to make the dashboard more visually striking and professional.
 - Market Data: I decided to stop using external APIs like Reservoir because they often failed to connect. Instead, the dashboard now uses real-time data directly from my own indexer, which is much more stable.
