@@ -50,17 +50,24 @@ Visit the local URL shown in your terminal (usually http://localhost:5173) to se
 In order to build this project, I took an incremental approach:
 
 1.  **Research**: I started by simply downloading the **HyperIndex** docs to understand how it manage the EVM events.
+
 2.  **Project idea**: I chose to work with NFT data to create a dashboard with relevant insights. I decided on Pudgy Penguins because they are currently among the top 3 most famous NFT collections on the Ethereum mainnet.
+
 3. **Data arqitechture**: Defined an entity (`Account`) which helped me to avoid manual updates and kept Indexer's velocity. 
+
 4.  **Handler Logic**: Initially, I defined simple properties like mintedAt in `EventHandlers.ts` to capture updates on demand.
+
 5.  **Frontend**: I must admit I'm not a fan of frontend development, so I used AI to assist with the UI. However, I wrote all the queries myself to ensure I understood exactly where the data was coming from.
+
 6. **Testing**: I used pnpm envio dev to set up the environment and tested it multiple times. I also used Hasura to verify that the data was correct and that the frontend was fetching it properly.
+
 7.  **Increasing Complexity:**:
     * I started with basic properties to get used to the Envio workflow. 
     * Then, I added research-oriented properties. I tried to find the "oldest NFTs kept alive," but I discovered that no NFTs in this collection had been burned yet, so I focused on other metrics. 
     * I implemented a list of the "oldest NFTs still held by their original minter", and a list of the ten most recent transactions which worked quite well.
     * Regarding market data, I attempted to connect with Reservoir for real-time prices. It got a bit complex, so I implemented fallback data to demonstrate how HyperIndex can integrate with external tools.
     * As I added more charts, I encountered some frontend bugs where the data was present in the page but not displaying correctly, even though the Hasura queries worked perfectly. I decided to show my current progress while I refactor these visual elements.
+
 8.  **Insights**:
     * I decided to kept the "burn" detection logic active for future-proofing and potential use with other NFT collections.
 
